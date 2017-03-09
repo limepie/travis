@@ -10,7 +10,7 @@ install:
   - docker run -d -p 127.0.0.1:80:80 --name webserver hub.ovn.io/busybox:travis /bin/sh -c "composer selfupdate; composer install"
 
 after_success:
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+  - if [ "$TRAVIS_BRANCH" == "release" ]; then
     docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" hub.ovn.io;
     docker push hub.ovn.io/busybox:travis;
     fi
