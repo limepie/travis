@@ -13,7 +13,7 @@ script:
   - docker ps -a
 
 after_success:
-  - "if [ \"$TRAVIS_BRANCH\" == \"release\" ]; then docker login -u=\"$DOCKER_USERNAME" -p=\"$DOCKER_PASSWORD" hub.ovn.io;docker push hub.ovn.io/%{branch}:%{build_number};fi"
+  - "if [ \"$TRAVIS_BRANCH\" == \"release\" ]; then docker login -u=\"$DOCKER_USERNAME\" -p=\"$DOCKER_PASSWORD\" hub.ovn.io;docker push hub.ovn.io/%{branch}:%{build_number};fi"
 
 notifications:
   email:
