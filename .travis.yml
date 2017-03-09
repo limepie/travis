@@ -15,7 +15,7 @@ install:
   - if [ "$TRAVIS_TAG" ]; then
     docker build --build-arg BUILD_NUMBER=$TRAVIS_BUILD_NUMBER -t hub.ovn.io/$TRAVIS_TAG:$TRAVIS_BUILD_NUMBER .;
     fi
-  - "docker run -d -p 127.0.0.1:80:80 --name webserver hub.ovn.io/%{branch}:%{build_number} /bin/sh -c 'composer selfupdate; composer install'"
+  - docker run -d -p 127.0.0.1:80:80 --name webserver hub.ovn.io/$TRAVIS_TAG:$TRAVIS_BUILD_NUMBER /bin/sh -c "composer selfupdate; composer install"
 
 script:
   - docker ps -a
