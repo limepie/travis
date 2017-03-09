@@ -7,16 +7,13 @@ services:
 
 install:
   - docker build -t hub.ovn.io/%{branch}:%{build_number} .
-  - docker run -d -p 127.0.0.1:80:80 --name webserver hub.ovn.io/%{branch}:%{build_number} /bin/sh -c "composer selfupdate; composer install"
+  - "docker run -d -p 127.0.0.1:80:80 --name webserver hub.ovn.io/%{branch}:%{build_number} /bin/sh -c 'composer selfupdate; composer install'"
 
 script:
   - docker ps -a
 
 after_success:
-  - if [ "$TRAVIS_BRANCH" == "release" ]; then
-    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" hub.ovn.io;
-    docker push hub.ovn.io/%{branch}:%{build_number};
-    fi
+  - "if [ \"$TRAVIS_BRANCH\" == \"release\" ]; then docker login -u=\"$DOCKER_USERNAME" -p=\"$DOCKER_PASSWORD" hub.ovn.io;docker push hub.ovn.io/%{branch}:%{build_number};fi"
 
 notifications:
   email:
@@ -25,4 +22,4 @@ notifications:
     template:
       - "%{repository} (%{commit}) : %{message} %{foo} "
       - "Build details: %{build_url}"
-      - hub.ovn.io/%{branch}:%{build_number}
+      - "hub.ovn.io/%{branch}:%{build_number}"
