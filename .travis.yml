@@ -1,6 +1,9 @@
 sudo: required
 
-language: php7
+language: php
+
+php:
+  - 7.0
 
 services:
   - docker
@@ -13,7 +16,18 @@ script:
   - docker ps -a
 
 after_success:
-  - "if [ \"$TRAVIS_BRANCH\" == \"release\" ]; then docker login -u=\"$DOCKER_USERNAME\" -p=\"$DOCKER_PASSWORD\" hub.ovn.io;docker push hub.ovn.io/%{branch}:%{build_number};fi"
+  - if [ "$TRAVIS_BRANCH" == "master" ] || [ $TRAVIS_BRANCH == "develop" ] || [ $TRAVIS_BRANCH == "release" ]; then
+    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+    docker build --build-arg BUILD_NUMBER=$TRAVIS_BUILD_NUMBER -t hub.ovn.io/$TRAVIS_BRANCH:$TRAVIS_BUILD_NUMBER .;
+    docker push hub.ovn.io/$TRAVIS_BRANCH:$TRAVIS_BUILD_NUMBER;
+    docker logout;
+    fi
+  - if [ "$TRAVIS_TAG" ]; then
+    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+    docker build --build-arg BUILD_NUMBER=$TRAVIS_BUILD_NUMBER -t hub.ovn.io/$TRAVIS_TAG:$TRAVIS_BUILD_NUMBER .;
+    docker push hub.ovn.io/$TRAVIS_TAG:$TRAVIS_BUILD_NUMBER;
+    docker logout;
+    fi
 
 notifications:
   email:
