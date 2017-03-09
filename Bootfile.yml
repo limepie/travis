@@ -1,0 +1,74 @@
+project_name: dev
+stage_name: local
+services:
+  webserver:
+    container_name: webserver
+    image: yejune/webserver:7.0.16
+    expose:
+      - '80'
+    working_dir: /var/www
+    environment:
+      USE_SSL: on
+      FPM_LISTEN: /dev/shm/php-fpm.sock
+      FASTCGI_PASS: unix:/dev/shm/php-fpm.sock
+  redis:
+    container_name: redis
+    image: redis:3.2.8-alpine
+    expose:
+      - '6379'
+stages:
+  local:
+    services:
+      mysql:
+        container_name: mysql
+        image: yejune/mysql
+        expose:
+          - '3306'
+        environment:
+          TZ: Asia/Seoul
+          MYSQL_URL: 'mysql://user:pass@mysql:3306'
+          MYSQL_ROOT_PASSWORD: root
+          DOMAIN: mysql.dev.com
+          INITDB: |
+            CREATE DATABASE IF NOT EXISTS `dev`;
+        volumes:
+          - './var/mysql:/var/lib/mysql'
+      webserver:
+        hostname: dev.com
+        volumes:
+          - '.:/var/www'
+          - './var/log/nginx:/var/log/nginx'
+          - './var/certs:/var/certs'
+        environment:
+          DOMAIN: dev.com
+          STAGE_NAME: local
+          DEBUG: 1
+          MASTER_DATABASE_URL: mysql://root:root@mysql:3306/dev
+          SLAVE1_DATABASE_URL: mysql://root:root@mysql:3306/dev
+          REDIS_URL: redis
+          NGINX_CORS: true
+        links:
+          - mysql
+          - redis
+  production:
+    services:
+      webserver:
+        environment:
+          DOMAIN: production.com
+          STAGE_NAME: production
+          DEBUG: 0
+          MASTER_DATABASE_URL: mysql://root:rootroot@dbmaster.ca7pezyjeax2.ap-northeast-2.rds.amazonaws.com:3306/dev
+          SLAVE1_DATABASE_URL: mysql://root:rootroot@dbslave1.ca7pezyjeax2.ap-northeast-2.rds.amazonaws.com:3306/dev
+      links:
+        - memcached
+        - redis
+tasks:
+  composer:
+    container: webserver
+    cmd: composer
+  phinx:
+    container: webserver
+    cmd: vendor/bin/phinx
+  devtools:
+    container: webserver
+    cmd: vendor/bin/phalcon.php

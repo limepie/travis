@@ -1,0 +1,193 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "test api",
+        "version": "v1",
+        "title": "test API"
+    },
+    "host": "local.com",
+    "basePath": "/",
+    "schemes": [
+        "https"
+    ],
+    "securityDefinitions": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    },
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "tags": [{
+        "name": "auth",
+        "description": "auth"
+    }],
+    "paths": {
+        "/": {
+            "get": {
+                "description": "hello world",
+                "tags": [
+                    "auth"
+                ],
+                "operationId": "\\App\\Controllers\\Index->index",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/info": {
+            "get": {
+                "description": "php info",
+                "tags": [
+                    "info"
+                ],
+                "operationId": "\\App\\Controllers\\Index->info",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/readme": {
+            "get": {
+                "description": "readme",
+                "tags": [
+                    "info"
+                ],
+                "operationId": "\\App\\Controllers\\Index->readme",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "description": "user login",
+                "tags": [
+                    "auth"
+                ],
+                "operationId": "\\App\\Controllers\\Auth\\Login->index",
+                "produces": [
+                    "application/json; charset=utf-8"
+                ],
+                "consumes": [
+                    "application/json; charset=utf-8",
+                    "application/x-www-form-urlencoded"
+                ],
+                "parameters": [{
+                    "name": "user_id",
+                    "description": "user id",
+                    "in": "formData",
+                    "required": true,
+                    "type": "string"
+                }, {
+                    "name": "user_password",
+                    "description": "user password",
+                    "in": "formData",
+                    "required": true,
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/auth/register": {
+            "post": {
+                "description": "user register",
+                "tags": [
+                    "auth"
+                ],
+                "operationId": "\\App\\Controllers\\Auth\\Register->index",
+                "produces": [
+                    "application/json; charset=utf-8"
+                ],
+                "consumes": [
+                    "application/json; charset=utf-8",
+                    "application/x-www-form-urlencoded"
+                ],
+                "parameters": [{
+                    "name": "user_id",
+                    "description": "user id",
+                    "in": "formData",
+                    "required": true,
+                    "type": "string"
+                }, {
+                    "name": "user_name",
+                    "description": "user name",
+                    "in": "formData",
+                    "required": true,
+                    "type": "string"
+                }, {
+                    "name": "user_password",
+                    "description": "user password",
+                    "in": "formData",
+                    "required": true,
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/auth/refresh": {
+            "post": {
+                "description": "user token refresh",
+                "tags": [
+                    "auth"
+                ],
+                "operationId": "\\App\\Controllers\\Auth\\Refresh->index",
+                "produces": [
+                    "application/json; charset=utf-8"
+                ],
+                "consumes": [
+                    "application/json; charset=utf-8",
+                    "application/x-www-form-urlencoded"
+                ],
+                "parameters": [{
+                    "name": "refresh",
+                    "description": "refresh token",
+                    "in": "formData",
+                    "required": true,
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/auth/validate": {
+            "post": {
+                "security": [{
+                    "Bearer": []
+                }],
+                "description": "user token validate",
+                "tags": [
+                    "auth"
+                ],
+                "operationId": "\\App\\Controllers\\Auth\\Validate->index",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        }
+    }
+}

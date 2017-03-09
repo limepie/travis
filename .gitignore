@@ -1,0 +1,17 @@
+.*
+!.version
+!.gitignore
+!.php_cs
+!.template
+.version
+.build
+.docker
+!.travis.yml
+!.dockerignore
+docker-compose*
+composer.lock
+vendor
+var
+test
+*.pem
+*.dab
