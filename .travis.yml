@@ -22,8 +22,9 @@ script:
       export IMAGE_TAG="$TRAVIS_BRANCH$TRAVIS_BUILD_NUMBER";
     fi
   - if [ ! -z "$IMAGE_TAG" ]; then
+      composer install
       sudo docker build --tag $DOCKER_REPO_SLUG .;
-      sudo docker run -d -p 127.0.0.1:80:80 --name webserver $DOCKER_REPO_SLUG /bin/sh -c "composer self-update; composer install; php public/index.php";
+      sudo docker run -d -p 127.0.0.1:80:80 --name webserver $DOCKER_REPO_SLUG;
     fi
 
 after_success:
