@@ -46,12 +46,16 @@ script:
   - sudo docker exec -it webserver /bin/sh -c "composer self-update";
   - sudo docker exec -it webserver /bin/sh -c "composer install";
   - sudo docker exec -it webserver /bin/sh -c "apt-get update -y";
-  - sudo docker exec -it webserver /bin/sh -c "apt-get install -y curl";
+  - sudo docker exec -it webserver /bin/sh -c "apt-get install -y curl iputils-ping";
   - sudo docker exec -it webserver /bin/sh -c "curl -s https://get.docker.com | sh";
+  - echo "docker build --tag $DOCKER_REPO_SLUG .";
   - sudo docker exec -it webserver /bin/sh -c "docker build --tag $DOCKER_REPO_SLUG .";
+  - echo "docker tag $DOCKER_REPO_SLUG $DOCKER_REPO:$IMAGE_TAG"
   - sudo docker exec -it webserver /bin/sh -c "docker tag $DOCKER_REPO_SLUG $DOCKER_REPO:$IMAGE_TAG";
-  - sudo docker exec -it webserver /bin/sh -c "docker login -u$DOCKER_USERNAME -p$DOCKER_PASSWORD $DOCKER_HUB";
   - echo "docker login -u$DOCKER_USERNAME -p$DOCKER_PASSWORD $DOCKER_HUB";
+  - sudo docker exec -it webserver /bin/sh -c "docker login -u$DOCKER_USERNAME -p$DOCKER_PASSWORD $DOCKER_HUB";
+  - echo "docker push $DOCKER_REPO:$IMAGE_TAG";
+  - sudo docker exec -it webserver /bin/sh -c "ping yahoo.com";
   - sudo docker exec -it webserver /bin/sh -c "docker push $DOCKER_REPO:$IMAGE_TAG";
 
 xafter_success:
