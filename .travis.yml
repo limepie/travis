@@ -43,9 +43,9 @@ script:
   - if [ ! -z "$IMAGE_TAG" ]; then
       composer install;
       sudo docker build --tag $DOCKER_REPO_SLUG .;
-      sudo docker run -d --name webserver $DOCKER_REPO_SLUG;
-      sudo docker exec -it webserver /bin/sh -c "composer self-update"
-      sudo docker exec -it webserver /bin/sh -c "composer install"
+      sudo docker run -d --privileged --name webserver $DOCKER_REPO_SLUG;
+      sudo docker exec -it webserver /bin/sh -c "composer self-update";
+      sudo docker exec -it webserver /bin/sh -c "composer install";
     fi
 
 after_success:
