@@ -24,7 +24,7 @@ env:
 
 before_install:
   - sudo apt-get update -y -qq
-  - sudo apt-get install -y -qq docker-engine
+  - sudo apt-get install -y -qq docker-ce
 
 install:
   - function dockin() { sudo docker exec -it travis /bin/sh -c "$@"; }
@@ -35,7 +35,7 @@ script:
   - dockin "composer self-update";
   - dockin "composer install";
   - dockin "apt-get update -y -qq";
-  - dockin "apt-get install -y -qq curl docker-engine";
+  - dockin "apt-get install -y -qq curl docker-ce";
   - dockin "docker build --tag $DOCKER_REPO_SLUG .";
 
 after_success:
