@@ -13,8 +13,7 @@ install:
   - echo $TRAVIS_TAG
   - if [ "$TRAVIS_BRANCH" == "master" ] || [ $TRAVIS_BRANCH == "develop" ] || [ $TRAVIS_BRANCH == "release" ]; then
     docker build --build-arg BUILD_NUMBER=$TRAVIS_BUILD_NUMBER -t hub.ovn.io/$TRAVIS_BRANCH:$TRAVIS_BUILD_NUMBER .;
-    fi
-  - if [ ! -z "$TRAVIS_TAG" ]; then
+    elif [ ! -z "$TRAVIS_TAG" ]; then
     docker build --build-arg BUILD_NUMBER=$TRAVIS_BUILD_NUMBER -t hub.ovn.io/$TRAVIS_TAG:$TRAVIS_BUILD_NUMBER .;
     fi
   - docker run -d -p 127.0.0.1:80:80 --name webserver hub.ovn.io/$TRAVIS_TAG:$TRAVIS_BUILD_NUMBER /bin/sh -c "composer selfupdate; composer install"
@@ -27,8 +26,7 @@ after_success:
     docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
     docker push hub.ovn.io/$TRAVIS_BRANCH:$TRAVIS_BUILD_NUMBER;
     docker logout;
-    fi
-  - if [ ! -z "$TRAVIS_TAG" ]; then
+    elif [ ! -z "$TRAVIS_TAG" ]; then
     docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
     docker push hub.ovn.io/$TRAVIS_TAG:$TRAVIS_BUILD_NUMBER;
     docker logout;
