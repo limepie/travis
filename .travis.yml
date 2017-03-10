@@ -11,7 +11,7 @@ services:
 env:
   global:
     - DOCKER_REPO_SLUG=websrv
-    - DOCKER_REPOSITORY=hub.ovn.io/websrv
+    - DOCKER_REPO=hub.ovn.io/websrv
 #install:
 #  -
 
@@ -19,12 +19,12 @@ script:
   - docker build -t $DOCKER_REPO_SLUG .
 
   - if [ ! -z "$TRAVIS_TAG" ]; then
-      export IMAGE_TAG=$TRAVIS_TAG;
+      #export IMAGE_TAG=$TRAVIS_TAG;
       export IMAGE_TAG=$TRAVIS_TAG$TRAVIS_BUILD_NUMBER
     fi
 
-  - if [ "$TRAVIS_BRANCH" == "master" ] || [ $TRAVIS_BRANCH == "develop" ] || [ $TRAVIS_BRANCH == "release" ]; then
-      export IMAGE_TAG=$TRAVIS_BRANCH;
+  - if [ "$TRAVIS_BRANCH" == "master" ] || [ "$TRAVIS_BRANCH" == "develop" ] || [ "$TRAVIS_BRANCH" == "release" ]; then
+      #export IMAGE_TAG=$TRAVIS_BRANCH;
       export IMAGE_TAG=$TRAVIS_BRANCH$TRAVIS_BUILD_NUMBER
     fi
 
@@ -37,13 +37,12 @@ after_success:
 
 before_deploy:
   - if [ ! -z "$IMAGE_TAG" ]; then
-    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-    docker tag $DOCKER_REPO_SLUG $DOCKER_REPOSITORY:$IMAGE_TAG
-    docker push $DOCKER_REPOSITORY:$IMAGE_TAG;
-    docker logout;
+      docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+      docker tag $DOCKER_REPO_SLUG $DOCKER_REPO:$IMAGE_TAG
+      docker push $DOCKER_REPO:$IMAGE_TAG;
+      docker logout;
     else
     fi
-  - exit 1;
 
 
 notifications:
@@ -53,4 +52,4 @@ notifications:
     template:
       - "%{repository} (%{commit}) : %{message} %{foo} "
       - "Build details: %{build_url}"
-      - "$DOCKER_REPOSITORY:%{branch}:%{build_number}"
+      - "$DOCKER_REPO:%{branch}:%{build_number}"
