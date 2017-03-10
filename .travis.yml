@@ -10,6 +10,7 @@ env:
     - DOCKER_HUB=hub.ovn.io
     - DOCKER_REPO_SLUG=websrv
     - DOCKER_REPO="$DOCKER_HUB/$DOCKER_REPO_SLUG"
+
 install:
   - sudo apt-get update -y
   - curl -s https://get.docker.com | sudo sh
@@ -22,7 +23,7 @@ script:
       export IMAGE_TAG="$TRAVIS_BRANCH$TRAVIS_BUILD_NUMBER";
     fi
   - if [ ! -z "$IMAGE_TAG" ]; then
-      composer install
+      composer install;
       sudo docker build --tag $DOCKER_REPO_SLUG .;
       sudo docker run -d -p 127.0.0.1:80:80 --name webserver $DOCKER_REPO_SLUG;
     fi
