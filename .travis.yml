@@ -40,7 +40,7 @@ branches:
     - /^deploy-.*$/
 
 before_install:
-  - set -e
+  #- set -e
   - sudo apt-get remove -y docker-engine
   - curl -s https://get.docker.com | sudo sh
 
@@ -64,7 +64,7 @@ after_success:
   - |
     if [ ! -z "$IMAGE_TAG" ]; then
       dockin "docker tag $DOCKER_REPO_SLUG $DOCKER_REPO:$IMAGE_TAG";
-      dockin "docker login -u$DOCKER_USERNAME -p$DOCKER_PASSWORD $DOCKER_HUB";
+      dockin "docker loxgin -u$DOCKER_USERNAME -p$DOCKER_PASSWORD $DOCKER_HUB";
       dockin "docker push $DOCKER_REPO:$IMAGE_TAG";
       dockin "docker logout $DOCKER_HUB";
       echo "Done. $DOCKER_REPO_SLUG $DOCKER_REPO:$IMAGE_TAG";
