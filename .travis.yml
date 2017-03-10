@@ -26,7 +26,7 @@ after_success:
     docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
     docker push hub.ovn.io/$TRAVIS_BRANCH:$TRAVIS_BUILD_NUMBER;
     docker logout;
-  fi
+    fi
   - if [ ! -z "$TRAVIS_TAG" ]; then
     docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
     docker push hub.ovn.io/$TRAVIS_TAG:$TRAVIS_BUILD_NUMBER;
