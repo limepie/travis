@@ -4,6 +4,9 @@ language: php
 
 dist: xenial
 
+servies:
+  - docker
+
 php:
   - 7.0
 
@@ -29,6 +32,7 @@ xinstall:
   - '(echo "extension=phalcon.so" > ./phalcon.ini && phpenv config-add ./phalcon.ini &> /dev/null)'
   - php --ri phalcon
 
+
 script:
   - if [ ! -z "$TRAVIS_TAG" ]; then
       export IMAGE_TAG="$TRAVIS_TAG$TRAVIS_BUILD_NUMBER";
@@ -39,7 +43,9 @@ script:
   - if [ ! -z "$IMAGE_TAG" ]; then
       composer install;
       sudo docker build --tag $DOCKER_REPO_SLUG .;
-      sudo docker run -d -p 127.0.0.1:80:80 --name webserver $DOCKER_REPO_SLUG;
+      sudo docker run -d --name webserver $DOCKER_REPO_SLUG;
+      sudo docker exec -it webserver /bin/sh -c "composer self-update"
+      sudo docker exec -it webserver /bin/sh -c "composer install"
     fi
 
 after_success:
