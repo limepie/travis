@@ -30,7 +30,7 @@ env:
 install:
   - sudo apt-get update -y
   - curl -s https://get.docker.com | sudo sh
-  - function dockerin() { echo "\n"; sudo docker exec -it travis /bin/sh -c "$@"; }
+  - function dockerin() { sudo docker exec -it travis /bin/sh -c "$@"; }
 
 script:
   - sudo docker build --tag travis .;
@@ -47,6 +47,7 @@ after_success:
   - dockerin "docker login -u$DOCKER_USERNAME -p$DOCKER_PASSWORD $DOCKER_HUB";
   - dockerin "docker push $DOCKER_REPO:$IMAGE_TAG";
   - dockerin "docker logout $DOCKER_HUB";
+  - echo "Done. $DOCKER_REPO_SLUG $DOCKER_REPO:$IMAGE_TAG";
 
 notifications:
   email:
