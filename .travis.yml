@@ -22,9 +22,6 @@ env:
         export IMAGE_TAG="$TRAVIS_BRANCH$TRAVIS_BUILD_NUMBER";
       fi
 
-matrix:
-  fast_finish: true
-
 # blocklist
 branches:
   except:
@@ -48,7 +45,7 @@ install:
 script:
   - sudo docker build --tag travis .;
   - sudo docker run -d --privileged -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/var/www --name travis travis;
-  - dockin "composer self-update2";
+  - dockin "composer self-update";
   - dockin "composer install";
   - dockin "apt-get update -y";
   - dockin "apt-get install -y curl";
