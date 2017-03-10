@@ -23,7 +23,8 @@ script:
     fi
   - if [ ! -z "$IMAGE_TAG" ]; then
       docker build --tag $DOCKER_REPO_SLUG .;
-      docker run -d -p 127.0.0.1:80:80 --name webserver $DOCKER_REPO_SLUG /bin/sh -c "composer self-update; composer install";
+      docker run -d -p 127.0.0.1:80:80 --name webserver $DOCKER_REPO_SLUG /bin/sh -c "composer self-update; composer install; php public/index.php";
+      docker exec -it $DOCKER_REPO_SLUG /bin/sh -c ""
     fi
 
 after_success:
