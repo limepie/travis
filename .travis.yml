@@ -2,6 +2,8 @@ sudo: required
 
 language: php
 
+dist: xenial
+
 php:
   - 7.0
 
@@ -10,10 +12,17 @@ env:
     - DOCKER_HUB=hub.ovn.io
     - DOCKER_REPO_SLUG=websrv
     - DOCKER_REPO="$DOCKER_HUB/$DOCKER_REPO_SLUG"
+  matrix:
+    - PHALCON_VERSION="v3.0.4"
 
 install:
   - sudo apt-get update -y
   - curl -s https://get.docker.com | sudo sh
+  - composer self-update
+  - git clone --depth=1 -q --branch=${PHALCON_VERSION} https://github.com/phalcon/cphalcon.git
+  - '(cd cphalcon/build; bash install &> /dev/null && cd ../..;)'
+  - '(echo "extension=phalcon.so" > ./phalcon.ini && phpenv config-add ./phalcon.ini &> /dev/null)'
+  - php --ri phalcon
 
 script:
   - if [ ! -z "$TRAVIS_TAG" ]; then
