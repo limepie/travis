@@ -33,7 +33,6 @@ after_success:
       docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" $DOCKER_HUB;
       docker push $DOCKER_REPO:$IMAGE_TAG;
       echo "success docker push $DOCKER_REPO:$IMAGE_TAG";
-      #docker logout $DOCKER_HUB;
     fi
 
 notifications:
