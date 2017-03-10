@@ -23,27 +23,29 @@ env:
         export IMAGE_TAG="$TRAVIS_BRANCH$TRAVIS_BUILD_NUMBER";
       fi
 
-install:
+before_install:
   - sudo apt-get update -y
   - curl -s https://get.docker.com | sudo sh
+
+install:
   - function dockin() { sudo docker exec -it travis /bin/sh -c "$@"; }
 
 script:
-  - sudo docker build --tag travis .
-  - sudo docker run -d --privileged -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/var/www --name travis travis
-  - dockin composer self-update
-  - dockin composer install
-  - dockin apt-get update -y
-  - dockin apt-get install -y curl
-  - dockin curl -s https://get.docker.com | sh
-  - dockin docker build --tag $DOCKER_REPO_SLUG .
+  - sudo docker build --tag travis .;
+  - sudo docker run -d --privileged -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/var/www --name travis travis;
+  - dockin "composer self-update";
+  - dockin "composer install";
+  - dockin "apt-get update -y";
+  - dockin "apt-get install -y curl";
+  - dockin "curl -s https://get.docker.com | sh";
+  - dockin "docker build --tag $DOCKER_REPO_SLUG .";
 
 after_success:
-  - dockin docker tag $DOCKER_REPO_SLUG $DOCKER_REPO:$IMAGE_TAG
-  - dockin docker login -u$DOCKER_USERNAME -p$DOCKER_PASSWORD $DOCKER_HUB
-  - dockin docker push $DOCKER_REPO:$IMAGE_TAG
-  - dockin docker logout $DOCKER_HUB
-  - echo "Done. $DOCKER_REPO_SLUG $DOCKER_REPO:$IMAGE_TAG"
+  - dockin "docker tag $DOCKER_REPO_SLUG $DOCKER_REPO:$IMAGE_TAG";
+  - dockin "docker login -u$DOCKER_USERNAME -p$DOCKER_PASSWORD $DOCKER_HUB";
+  - dockin "docker push $DOCKER_REPO:$IMAGE_TAG";
+  - dockin "docker logout $DOCKER_HUB";
+  - echo "Done. $DOCKER_REPO_SLUG $DOCKER_REPO:$IMAGE_TAG";
 
 notifications:
   email:
