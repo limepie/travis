@@ -8,15 +8,19 @@ php:
 services:
   - docker
 
+env:
+  global:
+    - DOCKER_REPOSITORY=$DOCKER_REPOSITORY:websrv
+
 install:
   - env
   - if [ "$TRAVIS_BRANCH" == "master" ] || [ $TRAVIS_BRANCH == "develop" ] || [ $TRAVIS_BRANCH == "release" ]; then
-    docker build --build-arg BUILD_NUMBER=$TRAVIS_BUILD_NUMBER -t hub.ovn.io/$TRAVIS_BRANCH:$TRAVIS_BUILD_NUMBER .;
+    docker build --build-arg BUILD_NUMBER=$TRAVIS_BUILD_NUMBER -t $DOCKER_REPOSITORY:$TRAVIS_BRANCH$TRAVIS_BUILD_NUMBER .;
     fi
   - if [ ! -z "$TRAVIS_TAG" ]; then
-    docker build --build-arg BUILD_NUMBER=$TRAVIS_BUILD_NUMBER -t hub.ovn.io/$TRAVIS_TAG:$TRAVIS_BUILD_NUMBER .;
+    docker build --build-arg BUILD_NUMBER=$TRAVIS_BUILD_NUMBER -t $DOCKER_REPOSITORY:$TRAVIS_TAG$TRAVIS_BUILD_NUMBER .;
     fi
-  - docker run -d -p 127.0.0.1:80:80 --name webserver hub.ovn.io/$TRAVIS_TAG:$TRAVIS_BUILD_NUMBER /bin/sh -c "composer selfupdate; composer install"
+  - docker run -d -p 127.0.0.1:80:80 --name webserver $DOCKER_REPOSITORY:$TRAVIS_TAG:$TRAVIS_BUILD_NUMBER /bin/sh -c "composer selfupdate; composer install"
 
 script:
   - docker ps -a
@@ -24,12 +28,12 @@ script:
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ] || [ $TRAVIS_BRANCH == "develop" ] || [ $TRAVIS_BRANCH == "release" ]; then
     docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-    docker push hub.ovn.io/$TRAVIS_BRANCH:$TRAVIS_BUILD_NUMBER;
+    docker push $DOCKER_REPOSITORY:$TRAVIS_BRANCH$TRAVIS_BUILD_NUMBER;
     docker logout;
     fi
   - if [ ! -z "$TRAVIS_TAG" ]; then
     docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-    docker push hub.ovn.io/$TRAVIS_TAG:$TRAVIS_BUILD_NUMBER;
+    docker push $DOCKER_REPOSITORY:$TRAVIS_TAG$TRAVIS_BUILD_NUMBER;
     docker logout;
     fi
 
@@ -40,4 +44,4 @@ notifications:
     template:
       - "%{repository} (%{commit}) : %{message} %{foo} "
       - "Build details: %{build_url}"
-      - "hub.ovn.io/%{branch}:%{build_number}"
+      - "$DOCKER_REPOSITORY:%{branch}:%{build_number}"
