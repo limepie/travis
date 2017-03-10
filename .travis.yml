@@ -40,7 +40,7 @@ before_install:
   - sudo usermod -aG docker $USER
 
 install:
-  - d function dockin() { docker exec -it travis /bin/sh -c "$@"; }
+  - function dockin() { docker exec -it travis /bin/sh -c "$@"; }
 
 script:
   - docker build --tag travis .;
