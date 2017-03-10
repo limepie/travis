@@ -42,7 +42,7 @@ after_success:
   - dockin "docker tag $DOCKER_REPO_SLUG $DOCKER_REPO:$IMAGE_TAG";
   - dockin "docker login -u$DOCKER_USERNAME -p$DOCKER_PASSWORD $DOCKER_HUB";
   - dockin "docker push $DOCKER_REPO:$IMAGE_TAG";
-  - dockin "docker logout $DOCKER_HUB";
+  - dockin docker logout $DOCKER_HUB;
   - echo "Done. $DOCKER_REPO_SLUG $DOCKER_REPO:$IMAGE_TAG";
 
 notifications:
