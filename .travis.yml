@@ -5,14 +5,13 @@ language: php
 php:
   - 7.0
 
-services:
-  - docker
-
 env:
   global:
     - DOCKER_HUB=hub.ovn.io
     - DOCKER_REPO_SLUG=websrv
     - DOCKER_REPO="$DOCKER_HUB/$DOCKER_REPO_SLUG"
+install:
+  - curl -s https://get.docker.com | sudo sh
 
 script:
   - if [ ! -z "$TRAVIS_TAG" ]; then
