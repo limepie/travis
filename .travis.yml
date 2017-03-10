@@ -34,7 +34,7 @@ install:
 script:
   - sudo docker build --tag travis .;
   - sudo docker run -d --privileged -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/var/www --name travis travis;
-  - sudo docker exec -it travis /bin/sh -c "composer self-update";
+  - sudo docker exec -it travis /bin/sh -c "composer self-update2 2>&1 &";
   - sudo docker exec -it travis /bin/sh -c "composer install";
   - sudo docker exec -it travis /bin/sh -c "apt-get update -y";
   - sudo docker exec -it travis /bin/sh -c "apt-get install -y curl iputils-ping";
