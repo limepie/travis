@@ -17,12 +17,10 @@ script:
   - docker build --tag $DOCKER_REPO_SLUG .
 
   - if [ ! -z "$TRAVIS_TAG" ]; then
-      #export IMAGE_TAG=$TRAVIS_TAG;
       export IMAGE_TAG="$TRAVIS_TAG$TRAVIS_BUILD_NUMBER"
     fi
 
   - if [ "$TRAVIS_BRANCH" == "master" ] || [ "$TRAVIS_BRANCH" == "develop" ] || [ "$TRAVIS_BRANCH" == "release" ]; then
-      #export IMAGE_TAG=$TRAVIS_BRANCH;
       export IMAGE_TAG="$TRAVIS_BRANCH$TRAVIS_BUILD_NUMBER"
     fi
 
@@ -42,12 +40,7 @@ before_deploy:
     else
     fi
 
-
 notifications:
   email:
     recipients:
       - k@yejune.com
-    template:
-      - "%{repository} (%{commit}) : %{message} %{foo} "
-      - "Build details: %{build_url}"
-      - "$DOCKER_REPO:%{branch}:%{build_number}"
