@@ -1,4 +1,4 @@
-sudo: false
+sudo: required
 
 language: php
 
@@ -37,15 +37,14 @@ before_install:
   - sudo apt-get update -y
   - sudo apt-get remove docker-engine -y
   - curl -s https://get.docker.com | sudo sh
-  #- sudo usermod -aG docker
-  - echo $USER
+  - sudo usermod -aG docker $USER
 
 install:
-  - d function dockin() { sudo docker exec -it travis /bin/sh -c "$@"; }
+  - d function dockin() { docker exec -it travis /bin/sh -c "$@"; }
 
 script:
-  - sudo docker build --tag travis .;
-  - sudo docker run -d --privileged -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/var/www --name travis travis;
+  - docker build --tag travis .;
+  - docker run -d --privileged -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/var/www --name travis travis;
   - dockin "composer self-update";
   - dockin "composer install";
   - dockin "apt-get update -y";
