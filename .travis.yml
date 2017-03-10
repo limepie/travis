@@ -4,7 +4,7 @@ language: php
 
 dist: xenial
 
-servies:
+services:
   - docker
 
 php:
@@ -22,14 +22,12 @@ env:
         export IMAGE_TAG="$TRAVIS_BRANCH$TRAVIS_BUILD_NUMBER";
       fi
 
-# blocklist
 branches:
+  # blocklist
   except:
     - master
     - except
-
-# safelist
-branches:
+  # safelist
   only:
     - develop
     - release
