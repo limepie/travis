@@ -14,17 +14,16 @@ env:
     - DOCKER_REPO=hub.ovn.io/websrv
 
 script:
-  - docker build --tag $DOCKER_REPO_SLUG .
-
   - if [ ! -z "$TRAVIS_TAG" ]; then
-      export IMAGE_TAG="$TRAVIS_TAG$TRAVIS_BUILD_NUMBER"
+      export IMAGE_TAG="$TRAVIS_TAG$TRAVIS_BUILD_NUMBER";
     fi
 
   - if [ "$TRAVIS_BRANCH" == "master" ] || [ "$TRAVIS_BRANCH" == "develop" ] || [ "$TRAVIS_BRANCH" == "release" ]; then
-      export IMAGE_TAG="$TRAVIS_BRANCH$TRAVIS_BUILD_NUMBER"
+      export IMAGE_TAG="$TRAVIS_BRANCH$TRAVIS_BUILD_NUMBER";
     fi
 
   - if [ ! -z "$IMAGE_TAG" ]; then
+      docker build --tag $DOCKER_REPO_SLUG .;
       docker run -d -p 127.0.0.1:80:80 --name webserver $DOCKER_REPO_SLUG /bin/sh -c "composer self-update; composer install";
     fi
 
@@ -34,7 +33,7 @@ after_success:
 before_deploy:
   - if [ ! -z "$IMAGE_TAG" ]; then
       docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-      docker tag $DOCKER_REPO_SLUG $DOCKER_REPO:$IMAGE_TAG
+      docker tag $DOCKER_REPO_SLUG $DOCKER_REPO:$IMAGE_TAG;
       docker push $DOCKER_REPO:$IMAGE_TAG;
       docker logout;
     else
