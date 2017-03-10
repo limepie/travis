@@ -10,8 +10,9 @@ services:
 
 env:
   global:
+    - DOCKER_SERVER=hub.ovn.io
     - DOCKER_REPO_SLUG=websrv
-    - DOCKER_REPO=hub.ovn.io/websrv
+    - DOCKER_REPO="$DOCKER_SERVER/$DOCKER_REPO_SLUG"
 
 script:
   - if [ ! -z "$TRAVIS_TAG" ]; then
