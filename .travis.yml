@@ -12,7 +12,6 @@ php:
 
 env:
   global:
-    - set -e
     - DOCKER_HUB=hub.ovn.io
     - DOCKER_REPO_SLUG=websrv
     - DOCKER_REPO="$DOCKER_HUB/$DOCKER_REPO_SLUG"
@@ -40,6 +39,7 @@ branches:
     - release
 
 before_install:
+  - set -e
   - sudo apt-get remove -y docker-engine
   - curl -s https://get.docker.com | sudo sh
 
