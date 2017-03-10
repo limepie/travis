@@ -10,7 +10,6 @@ servies:
 php:
   - 7.0
 
-
 env:
   global:
     - DOCKER_HUB=hub.ovn.io
@@ -31,21 +30,25 @@ install:
   - function dockin() { sudo docker exec -it travis /bin/sh -c "$@"; }
 
 script:
-  - sudo docker build --tag travis .;
-  - sudo docker run -d --privileged -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/var/www --name travis travis;
-  - dockin "composer self-update";
-  - dockin "composer install";
-  - dockin "apt-get update -y";
-  - dockin "apt-get install -y curl";
-  - dockin "curl -s https://get.docker.com | sh";
-  - dockin "docker build --tag $DOCKER_REPO_SLUG .";
+  - if [ ! -z "$IMAGE_TAG" ]; then
+      sudo docker build --tag travis .;
+      sudo docker run -d --privileged -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/var/www --name travis travis;
+      dockin "composer self-update2";
+      dockin "composer install";
+      dockin "apt-get update -y";
+      dockin "apt-get install -y curl";
+      dockin "curl -s https://get.docker.com | sh";
+      dockin "docker build --tag $DOCKER_REPO_SLUG .";
+    fi
 
 after_success:
-  - dockin "docker tag $DOCKER_REPO_SLUG $DOCKER_REPO:$IMAGE_TAG";
-  - dockin "docker login -u$DOCKER_USERNAME -p$DOCKER_PASSWORD $DOCKER_HUB";
-  - dockin "docker push $DOCKER_REPO:$IMAGE_TAG";
-  - dockin "docker logout $DOCKER_HUB";
-  - echo "Done. $DOCKER_REPO_SLUG $DOCKER_REPO:$IMAGE_TAG";
+  - if [ ! -z "$IMAGE_TAG" ]; then
+      dockin "docker tag $DOCKER_REPO_SLUG $DOCKER_REPO:$IMAGE_TAG";
+      dockin "docker login -u$DOCKER_USERNAME -p$DOCKER_PASSWORD $DOCKER_HUB";
+      dockin "docker push $DOCKER_REPO:$IMAGE_TAG";
+      dockin "docker logout $DOCKER_HUB";
+      echo "Done. $DOCKER_REPO_SLUG $DOCKER_REPO:$IMAGE_TAG";
+    fi
 
 notifications:
   email:
