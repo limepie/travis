@@ -12,30 +12,33 @@ env:
   global:
     - DOCKER_REPOSITORY=hub.ovn.io/websrv
 
-install:
-  - env
-  - if [ "$TRAVIS_BRANCH" == "master" ] || [ $TRAVIS_BRANCH == "develop" ] || [ $TRAVIS_BRANCH == "release" ]; then
-    docker build --build-arg BUILD_NUMBER=$TRAVIS_BUILD_NUMBER -t $DOCKER_REPOSITORY:$TRAVIS_BRANCH$TRAVIS_BUILD_NUMBER .;
-    fi
-  - if [ ! -z "$TRAVIS_TAG" ]; then
-    docker build --build-arg BUILD_NUMBER=$TRAVIS_BUILD_NUMBER -t $DOCKER_REPOSITORY:$TRAVIS_TAG$TRAVIS_BUILD_NUMBER .;
-    fi
-  - docker run -d -p 127.0.0.1:80:80 --name webserver $DOCKER_REPOSITORY:$TRAVIS_TAG:$TRAVIS_BUILD_NUMBER /bin/sh -c "composer selfupdate; composer install"
+#install:
+#  -
 
 script:
-  - docker ps -a
-
-after_success:
+  - env
   - if [ "$TRAVIS_BRANCH" == "master" ] || [ $TRAVIS_BRANCH == "develop" ] || [ $TRAVIS_BRANCH == "release" ]; then
-    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-    docker push $DOCKER_REPOSITORY:$TRAVIS_BRANCH$TRAVIS_BUILD_NUMBER;
-    docker logout;
+    export IMAGE_TAG=$TRAVIS_BRANCH$TRAVIS_BUILD_NUMBER
+    docker build --build-arg BUILD_NUMBER=$TRAVIS_BUILD_NUMBER -t $DOCKER_REPOSITORY:$IMAGE_TAG .;
     fi
   - if [ ! -z "$TRAVIS_TAG" ]; then
+    export IMAGE_TAG=$TRAVIS_TAG$TRAVIS_BUILD_NUMBER
+    docker build --build-arg BUILD_NUMBER=$TRAVIS_BUILD_NUMBER -t $DOCKER_REPOSITORY:$IMAGE_TAG .;
+    fi
+  - if [ ! -z "$IMAGE_TAG" ]; then
+    docker run -d -p 127.0.0.1:80:80 --name webserver $DOCKER_REPOSITORY:$IMAGE_TAG /bin/sh -c "composer self-update; composer install"
+    fi
+
+after_success:
+  - docker ps -a
+
+before_deploy:
+  - if [ ! -z "$IMAGE_TAG" ]; then
     docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-    docker push $DOCKER_REPOSITORY:$TRAVIS_TAG$TRAVIS_BUILD_NUMBER;
+    docker push $DOCKER_REPOSITORY:$IMAGE_TAG;
     docker logout;
     fi
+
 
 notifications:
   email:
