@@ -45,9 +45,9 @@ after_success:
   - sudo docker exec -it travis /bin/sh -c "docker tag $DOCKER_REPO_SLUG $DOCKER_REPO:$IMAGE_TAG";
   - sudo docker exec -it travis /bin/sh -c "docker login -u$DOCKER_USERNAME -p$DOCKER_PASSWORD $DOCKER_HUB";
   - sudo docker exec -it travis /bin/sh -c "docker push $DOCKER_REPO:$IMAGE_TAG";
-  - sudo docker exec -it travis /bin/sh -c "docker logout $DOCKER_HUB";
-  - function test() { echo "test"; }
-  - test "a"
+  - function test() { sudo docker exec -it travis /bin/sh -c  "$@"; }
+  - test "docker logout $DOCKER_HUB";
+
 notifications:
   email:
     recipients:
