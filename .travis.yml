@@ -12,11 +12,9 @@ env:
   global:
     - DOCKER_REPO_SLUG=websrv
     - DOCKER_REPO=hub.ovn.io/websrv
-#install:
-#  -
 
 script:
-  - docker build -t $DOCKER_REPO_SLUG .
+  - docker build --tag $DOCKER_REPO_SLUG .
 
   - if [ ! -z "$TRAVIS_TAG" ]; then
       #export IMAGE_TAG=$TRAVIS_TAG;
