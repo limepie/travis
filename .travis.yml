@@ -41,6 +41,7 @@ script:
       export IMAGE_TAG="$TRAVIS_BRANCH$TRAVIS_BUILD_NUMBER";
     fi
   - if [ ! -z "$IMAGE_TAG" ]; then
+      sudo docker build --tag $DOCKER_REPO_SLUG .;
       sudo docker run -d --privileged -v $(pwd):/var/www --name webserver $DOCKER_REPO_SLUG;
       sudo docker exec -it webserver /bin/sh -c "composer self-update";
       sudo docker exec -it webserver /bin/sh -c "composer install";
