@@ -50,12 +50,6 @@ script:
   - sudo docker exec -it travis /bin/sh -c "curl -s https://get.docker.com | sh";
   - echo "docker build --tag $DOCKER_REPO_SLUG .";
   - sudo docker exec -it travis /bin/sh -c "docker build --tag $DOCKER_REPO_SLUG .";
-  - echo "docker tag $DOCKER_REPO_SLUG $DOCKER_REPO:$IMAGE_TAG"
-  - sudo docker exec -it travis /bin/sh -c "docker tag $DOCKER_REPO_SLUG $DOCKER_REPO:$IMAGE_TAG";
-  - echo "docker login -u$DOCKER_USERNAME -p$DOCKER_PASSWORD $DOCKER_HUB";
-  - sudo docker exec -it travis /bin/sh -c "docker login -u$DOCKER_USERNAME -p$DOCKER_PASSWORD $DOCKER_HUB";
-  - echo "docker push $DOCKER_REPO:$IMAGE_TAG";
-  - sudo docker exec -it travis /bin/sh -c "docker push $DOCKER_REPO:$IMAGE_TAG";
 
 xafter_success:
   - docker ps -a
