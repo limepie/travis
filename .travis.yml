@@ -10,7 +10,7 @@ services:
 
 env:
   global:
-    - DOCKER_REPOSITORY=$DOCKER_REPOSITORY:websrv
+    - DOCKER_REPOSITORY=$DOCKER_REPOSITORY/websrv
 
 install:
   - env
