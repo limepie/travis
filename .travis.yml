@@ -35,7 +35,7 @@ install:
   - dockerin() { \
       local command="${@}" \
       if [[ ! -z ${command} ]] ; then \
-        sudo docker exec -it travis /bin/sh -c "{$command}" \
+        sudo docker exec -it travis /bin/sh -c "{$command}"; \
       fi \
     }
 
