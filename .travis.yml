@@ -35,6 +35,7 @@ branches:
 
 before_install:
   - sudo apt-get update -y
+  - sudo apt-get remove docker-engine -y
   - curl -s https://get.docker.com | sudo sh
 
 install:
