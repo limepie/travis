@@ -20,12 +20,12 @@ script:
 
   - if [ ! -z "$TRAVIS_TAG" ]; then
       #export IMAGE_TAG=$TRAVIS_TAG;
-      export IMAGE_TAG=$TRAVIS_TAG$TRAVIS_BUILD_NUMBER
+      export IMAGE_TAG="$TRAVIS_TAG$TRAVIS_BUILD_NUMBER"
     fi
 
   - if [ "$TRAVIS_BRANCH" == "master" ] || [ "$TRAVIS_BRANCH" == "develop" ] || [ "$TRAVIS_BRANCH" == "release" ]; then
       #export IMAGE_TAG=$TRAVIS_BRANCH;
-      export IMAGE_TAG=$TRAVIS_BRANCH$TRAVIS_BUILD_NUMBER
+      export IMAGE_TAG="$TRAVIS_BRANCH$TRAVIS_BUILD_NUMBER"
     fi
 
   - if [ ! -z "$IMAGE_TAG" ]; then
