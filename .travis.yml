@@ -31,8 +31,8 @@ after_success:
   - docker ps -a
 
   - if [ ! -z "$IMAGE_TAG" ]; then
-      docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
       docker tag $DOCKER_REPO_SLUG $DOCKER_REPO:$IMAGE_TAG;
+      docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
       docker push $DOCKER_REPO:$IMAGE_TAG;
       docker logout;
     fi
