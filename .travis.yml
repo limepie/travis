@@ -37,7 +37,9 @@ before_deploy:
     docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
     docker push $DOCKER_REPOSITORY:$IMAGE_TAG;
     docker logout;
+    else
     fi
+  - exit 1;
 
 
 notifications:
