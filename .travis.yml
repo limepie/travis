@@ -7,6 +7,11 @@ dist: xenial
 php:
   - 7.0
 
+addons:
+ apt:
+  packages:
+    - libyaml-dev
+
 env:
   global:
     - DOCKER_HUB=hub.ovn.io
@@ -15,7 +20,7 @@ env:
   matrix:
     - PHALCON_VERSION="v3.0.4"
 
-install:
+xinstall:
   - sudo apt-get update -y
   - curl -s https://get.docker.com | sudo sh
   - composer self-update
