@@ -1,6 +1,15 @@
 sudo: required
 
+language: php
+
 dist: xenial
+
+servies:
+  - docker
+
+php:
+  - 7.0
+
 
 env:
   global:
