@@ -34,10 +34,10 @@ install:
 script:
   - sudo docker build --tag travis .;
   - sudo docker run -d --privileged -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/var/www --name travis travis;
-  - sudo docker exec -it travis /bin/sh -c "composer self-update2 2>&1 &";
+  - sudo docker exec -it travis /bin/sh -c "composer self-update";
   - sudo docker exec -it travis /bin/sh -c "composer install";
   - sudo docker exec -it travis /bin/sh -c "apt-get update -y";
-  - sudo docker exec -it travis /bin/sh -c "apt-get install -y curl iputils-ping";
+  - sudo docker exec -it travis /bin/sh -c "apt-get install -y curl";
   - sudo docker exec -it travis /bin/sh -c "curl -s https://get.docker.com | sh";
   - sudo docker exec -it travis /bin/sh -c "docker build --tag $DOCKER_REPO_SLUG .";
 
@@ -46,7 +46,8 @@ after_success:
   - sudo docker exec -it travis /bin/sh -c "docker login -u$DOCKER_USERNAME -p$DOCKER_PASSWORD $DOCKER_HUB";
   - sudo docker exec -it travis /bin/sh -c "docker push $DOCKER_REPO:$IMAGE_TAG";
   - sudo docker exec -it travis /bin/sh -c "docker logout $DOCKER_HUB";
-
+  - function test() { echo "test"; }
+  - test "a"
 notifications:
   email:
     recipients:
