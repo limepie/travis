@@ -41,11 +41,14 @@ script:
       export IMAGE_TAG="$TRAVIS_BRANCH$TRAVIS_BUILD_NUMBER";
     fi
   - if [ ! -z "$IMAGE_TAG" ]; then
-      composer install;
       sudo docker build --tag $DOCKER_REPO_SLUG .;
       sudo docker run -d --privileged --name webserver $DOCKER_REPO_SLUG;
       sudo docker exec -it webserver /bin/sh -c "composer self-update";
       sudo docker exec -it webserver /bin/sh -c "composer install";
+      sudo docker exec -it webserver /bin/sh -c "apt-get update -y";
+      sudo docker exec -it webserver /bin/sh -c "curl -s https://get.docker.com | sh";
+      sudo docker exec -it webserver /bin/sh -c "docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" $DOCKER_HUB";
+      sudo docker exec -it webserver /bin/sh -c "docker push $DOCKER_REPO:$IMAGE_TAG";
     fi
 
 after_success:
