@@ -35,7 +35,6 @@ after_success:
       docker tag $DOCKER_REPO_SLUG $DOCKER_REPO:$IMAGE_TAG;
       docker push $DOCKER_REPO:$IMAGE_TAG;
       docker logout;
-    else
     fi
 
 notifications:
