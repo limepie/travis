@@ -11,8 +11,8 @@ env:
     - DOCKER_REPO_SLUG=websrv
     - DOCKER_REPO="$DOCKER_HUB/$DOCKER_REPO_SLUG"
 install:
-  - apt-get update -y
-  - curl -s https://get.docker.com |  sh
+  - sudo apt-get update -y
+  - curl -s https://get.docker.com | sudo sh
 
 script:
   - if [ ! -z "$TRAVIS_TAG" ]; then
@@ -22,18 +22,18 @@ script:
       export IMAGE_TAG="$TRAVIS_BRANCH$TRAVIS_BUILD_NUMBER";
     fi
   - if [ ! -z "$IMAGE_TAG" ]; then
-      docker build --tag $DOCKER_REPO_SLUG .;
-      docker run -d -p 127.0.0.1:80:80 --name webserver $DOCKER_REPO_SLUG /bin/sh -c "composer self-update; composer install; php public/index.php";
+      sudo docker build --tag $DOCKER_REPO_SLUG .;
+      sudo docker run -d -p 127.0.0.1:80:80 --name webserver $DOCKER_REPO_SLUG /bin/sh -c "composer self-update; composer install; php public/index.php";
     fi
 
 after_success:
   - docker ps -a
   - if [ ! -z "$IMAGE_TAG" ]; then
-      docker tag $DOCKER_REPO_SLUG $DOCKER_REPO:$IMAGE_TAG;
-      docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" $DOCKER_HUB;
-      docker push $DOCKER_REPO:$IMAGE_TAG;
+      sudo docker tag $DOCKER_REPO_SLUG $DOCKER_REPO:$IMAGE_TAG;
+      sudo docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" $DOCKER_HUB;
+      sudo docker push $DOCKER_REPO:$IMAGE_TAG;
       echo "success docker push $DOCKER_REPO:$IMAGE_TAG";
-      docker logout $DOCKER_HUB;
+      sudo docker logout $DOCKER_HUB;
     fi
 
 notifications:
