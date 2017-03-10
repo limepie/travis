@@ -37,9 +37,11 @@ before_install:
   - sudo apt-get update -y
   - sudo apt-get remove docker-engine -y
   - curl -s https://get.docker.com | sudo sh
+  #- sudo usermod -aG docker
+  - echo $USER
 
 install:
-  - function dockin() { sudo docker exec -it travis /bin/sh -c "$@"; }
+  - d function dockin() { sudo docker exec -it travis /bin/sh -c "$@"; }
 
 script:
   - sudo docker build --tag travis .;
