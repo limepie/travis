@@ -10,7 +10,7 @@ services:
 
 install:
   - echo $TRAVIS_BRANCH
-  - echo $TRAVIS_TAG
+  - type($TRAVIS_TAG)
   - if [ "$TRAVIS_BRANCH" == "master" ] || [ $TRAVIS_BRANCH == "develop" ] || [ $TRAVIS_BRANCH == "release" ]; then
     docker build --build-arg BUILD_NUMBER=$TRAVIS_BUILD_NUMBER -t hub.ovn.io/$TRAVIS_BRANCH:$TRAVIS_BUILD_NUMBER .;
     elif [ ! -z "$TRAVIS_TAG" ]; then
