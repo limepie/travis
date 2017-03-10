@@ -31,7 +31,14 @@ xinstall:
   - '(cd cphalcon/build; bash install &> /dev/null && cd ../..;)'
   - '(echo "extension=phalcon.so" > ./phalcon.ini && phpenv config-add ./phalcon.ini &> /dev/null)'
   - php --ri phalcon
+install:
+  - dockerin() {
+      local command="${@}"
 
+      if [[ ! -z ${command} ]] ; then
+        sudo docker exec -it travis /bin/sh -c "{$command}"
+      fi
+    }
 
 script:
   - if [ ! -z "$TRAVIS_TAG" ]; then
@@ -43,15 +50,14 @@ script:
 
   - sudo docker build --tag travis .;
   - sudo docker run -d --privileged -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/var/www --name travis travis;
-  - sudo docker exec -it travis /bin/sh -c "composer self-update";
-  - sudo docker exec -it travis /bin/sh -c "composer install";
-  - sudo docker exec -it travis /bin/sh -c "apt-get update -y";
-  - sudo docker exec -it travis /bin/sh -c "apt-get install -y curl iputils-ping";
-  - sudo docker exec -it travis /bin/sh -c "curl -s https://get.docker.com | sh";
-  - echo "docker build --tag $DOCKER_REPO_SLUG .";
-  - sudo docker exec -it travis /bin/sh -c "docker build --tag $DOCKER_REPO_SLUG .";
+  - dockerin "composer self-update";
+  - dockerin "composer install";
+  - dockerin "apt-get update -y";
+  - dockerin "apt-get install -y curl iputils-ping";
+  - dockerin "curl -s https://get.docker.com | sh";
+  - dockerin "docker build --tag $DOCKER_REPO_SLUG .";
 
-xafter_success:
+after_success:
   - docker ps -a
   - if [ ! -z "$IMAGE_TAG" ]; then
       sudo docker tag $DOCKER_REPO_SLUG $DOCKER_REPO:$IMAGE_TAG;
