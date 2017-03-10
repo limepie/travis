@@ -32,12 +32,11 @@ xinstall:
   - '(echo "extension=phalcon.so" > ./phalcon.ini && phpenv config-add ./phalcon.ini &> /dev/null)'
   - php --ri phalcon
 install:
-  - dockerin() {
-      local command="${@}"
-
-      if [[ ! -z ${command} ]] ; then
-        sudo docker exec -it travis /bin/sh -c "{$command}"
-      fi
+  - dockerin() { \
+      local command="${@}" \
+      if [[ ! -z ${command} ]] ; then \
+        sudo docker exec -it travis /bin/sh -c "{$command}" \
+      fi \
     }
 
 script:
