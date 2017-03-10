@@ -23,16 +23,9 @@ env:
   matrix:
     - PHALCON_VERSION="v3.0.4"
 
-xinstall:
+install:
   - sudo apt-get update -y
   - curl -s https://get.docker.com | sudo sh
-  - composer self-update
-  - git clone --depth=1 -q --branch=${PHALCON_VERSION} https://github.com/phalcon/cphalcon.git
-  - '(cd cphalcon/build; bash install &> /dev/null && cd ../..;)'
-  - '(echo "extension=phalcon.so" > ./phalcon.ini && phpenv config-add ./phalcon.ini &> /dev/null)'
-  - php --ri phalcon
-install:
-  - dockerin() { local command="${@}" ; sudo docker exec -it travis /bin/sh -c "{$command}" ; }
 
 script:
   - if [ ! -z "$TRAVIS_TAG" ]; then
@@ -44,16 +37,19 @@ script:
 
   - sudo docker build --tag travis .;
   - sudo docker run -d --privileged -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/var/www --name travis travis;
-  - dockerin "composer self-update";
-  - dockerin "composer install";
-  - dockerin "apt-get update -y";
-  - dockerin "apt-get install -y curl iputils-ping";
-  - dockerin "curl -s https://get.docker.com | sh";
-  - dockerin "docker build --tag $DOCKER_REPO_SLUG .";
+  - sudo docker exec -it travis /bin/sh -c "composer self-update";
+  - sudo docker exec -it travis /bin/sh -c "composer install";
+  - sudo docker exec -it travis /bin/sh -c "apt-get update -y";
+  - sudo docker exec -it travis /bin/sh -c "apt-get install -y curl iputils-ping";
+  - sudo docker exec -it travis /bin/sh -c "curl -s https://get.docker.com | sh";
+  - sudo docker exec -it webserver /bin/sh -c "docker build --tag $DOCKER_REPO_SLUG .";
+  - sudo docker exec -it webserver /bin/sh -c "docker tag $DOCKER_REPO_SLUG $DOCKER_REPO:$IMAGE_TAG";
+  - sudo docker exec -it webserver /bin/sh -c "docker login -u$DOCKER_USERNAME -p$DOCKER_PASSWORD $DOCKER_HUB";
+  - sudo docker exec -it webserver /bin/sh -c "docker push $DOCKER_REPO:$IMAGE_TAG";
 
 after_success:
   - docker ps -a
-  - if [ ! -z "$IMAGE_TAG" ]; then
+  - if [ ! -z "$IMAGE_TAG1" ]; then
       sudo docker tag $DOCKER_REPO_SLUG $DOCKER_REPO:$IMAGE_TAG;
       sudo docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" $DOCKER_HUB;
       sudo docker push $DOCKER_REPO:$IMAGE_TAG;
