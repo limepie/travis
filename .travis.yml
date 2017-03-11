@@ -43,6 +43,7 @@ install:
   - function dockin() { docker exec -it travis /bin/sh -c "$@"; }
 
 script:
+  - docker ps;
   - docker build --tag travis .;
   - docker run -d --privileged -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/var/www --name travis travis;
   - dockin "composer self-update";
