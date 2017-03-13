@@ -4,21 +4,21 @@ files:
   - source: /
     destination: /home/ubuntu/build
 permissions:
-  - object: /home/ubuntu/build/deploy
+  - object: /home/ubuntu/build/deploy/
     pattern: "*.sh"
     mode: 777
     type:
       - file
 hooks:
   ApplicationStop:
-    - location: deploy/kill_container.sh
-      timeout: 20
+    - location: ./deploy/kill_container.sh
+      timeout: 30
       runas: ubuntu
   AfterInstall:
-    - location: deploy/load_image.sh
-      timeout: 10
+    - location: ./deploy/load_image.sh
+      timeout: 60
       runas: ubuntu
   ApplicationStart:
-    - location: deploy/start_container.sh
-      timeout: 10
+    - location: ./deploy/start_container.sh
+      timeout: 30
       runas: ubuntu
