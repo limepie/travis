@@ -44,6 +44,7 @@ install:
   - function dockin() { docker exec -it travis /bin/sh -c "$@"; }
 
 before_script:
+  - which docker
   - export SHORT_COMMIT=${TRAVIS_COMMIT:0:7}
   - export DOCKER_LABEL_NAME=`echo $TRAVIS_REPO_SLUG | sed 's/\//\./g'`
   - echo "SHORT_COMMIT  $SHORT_COMMIT"
