@@ -65,9 +65,6 @@ script:
   - dockin "composer install";
   - dockin "docker build --build-arg BUILD_NUMBER=$TRAVIS_BUILD_NUMBER --build-arg BUILD_TAG=$IMAGE_TAG --tag $DOCKER_REPO_SLUG .";
 
-xafter_success:
-  - dockin "docker tag $DOCKER_REPO_SLUG $DOCKER_REPO:$IMAGE_TAG";
-
 after_success:
   - mkdir -p build
   - cd build
