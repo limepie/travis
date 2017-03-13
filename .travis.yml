@@ -56,7 +56,7 @@ before_script:
   - echo "TRAVIS_REPO_SLUG  $TRAVIS_REPO_SLUG"
 
 script:
-  - docker build --build-arg BUILD_NUMBER=${TRAVIS_BUILD_NUMBER} --build-arg BUILD_TAG=${IMAGE_TAG} --tag travis .;
+  - docker build --build-arg BUILD_NUMBER=$TRAVIS_BUILD_NUMBER --build-arg BUILD_TAG=$IMAGE_TAG --tag travis .;
   - docker run -d --privileged -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/var/www --name travis travis;
   - dockin "apt-get update -y";
   - dockin "apt-get install -y curl";
@@ -86,7 +86,7 @@ deploy:
     local_dir: upload
     upload-dir: $TRAVIS_REPO_SLUG/$IMAGE_TAGNAME
     skip_cleanup: true
-    acl: public_read
+    acl: private
     detect_encoding: true
     on:
       repo: $TRAVIS_REPO_SLUG
