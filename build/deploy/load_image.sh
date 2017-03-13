@@ -2,4 +2,4 @@
 
 set -e
 
-docker load -i /tmp/docker_image.tar.gz
+docker load -i /home/ubuntu/docker_image.tgz
