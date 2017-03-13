@@ -1,18 +1,18 @@
 version: 0.0
 os: linux
 files:
-  - source: /
-    destination: /home/ubuntu
+  - source: /tmp
+    destination: /home/ubuntu/build
 hooks:
   ApplicationStop:
     - location: deploy/kill_container.sh
       timeout: 20
-      runas: ubuntu
+      runas: root
   AfterInstall:
     - location: deploy/load_image.sh
       timeout: 10
-      runas: ubuntu
+      runas: root
   ApplicationStart:
     - location: deploy/start_container.sh
       timeout: 10
-      runas: ubuntu
+      runas: root
