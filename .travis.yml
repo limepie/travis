@@ -93,7 +93,7 @@ deploy:
     access_key_id: AKIAIYFMU73S3HMTZRVA
     secret_access_key: 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
     bucket: yejune-deploy
-    key: build.zip
+    key: limepie/travis/latest/release/build.zip
     bundle_type: zip
     application: app
     deployment_group: deploy
