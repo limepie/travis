@@ -65,7 +65,8 @@ script:
 xafter_success:
   - dockin "docker tag $DOCKER_REPO_SLUG $DOCKER_REPO:$IMAGE_TAG";
 
-before_deploy:
+#before_deploy:
+after_success:
   - mkdir -p build
   - cd build
   - docker save $DOCKER_REPO_SLUG | gzip -c > docker_image.tgz
