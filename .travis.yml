@@ -85,7 +85,7 @@ deploy:
     bucket: yejune-deploy
     region: ap-northeast-2
     local_dir: upload
-    upload-dir: $TRAVIS_REPO_SLUG/latest/$TRAVIS_BRANCH
+    upload-dir: $TRAVIS_REPO_SLUG/latest/$IMAGE_TAGNAME
     skip_cleanup: true
     acl: public_read
     detect_encoding: true
