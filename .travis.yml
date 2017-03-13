@@ -48,13 +48,13 @@ before_script:
   - echo "DOCKER_LABEL_NAME  $DOCKER_LABEL_NAME"
   - echo "TRAVIS_COMMIT  $TRAVIS_COMMIT"
   - echo "TRAVIS_TAG  $TRAVIS_TAG"
-  - echo "TRAVIS_BRANCH : $TRAVIS_BRANCH"
+  - echo "TRAVIS_BRANCH  $TRAVIS_BRANCH"
   - echo "TRAVIS_BUILD_NUMBER  $TRAVIS_BUILD_NUMBER"
   - echo "TRAVIS_REPO_SLUG  $TRAVIS_REPO_SLUG"
 
 script:
   - docker build --tag travis .;
-  - docker run -d --privileged -v /usr/bin/docker:/usr/bin/docker -v /var/run/docker.sock:/var/run/docker.sock -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/var/www --name travis travis;
+  - docker run -d --privileged -v $(which docker):/usr/bin/docker -v /var/run/docker.sock:/var/run/docker.sock -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/var/www --name travis travis;
   - dockin "composer self-update";
   - dockin "composer install";
   - dockin "docker build --tag $DOCKER_REPO_SLUG .";
