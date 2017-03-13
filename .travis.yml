@@ -94,8 +94,8 @@ deploy:
     bucket: yejune-deploy
     key: $TRAVIS_REPO_SLUG/$IMAGE_TAGNAME/build.zip
     bundle_type: zip
-    application: app
-    deployment_group: deploy
+    application: Testapp-Codedeploy
+    deployment_group: Testapp-Codedeploy-Group
     region: ap-northeast-2
     on:
       repo: $TRAVIS_REPO_SLUG
