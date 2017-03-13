@@ -68,7 +68,6 @@ script:
 xafter_success:
   - dockin "docker tag $DOCKER_REPO_SLUG $DOCKER_REPO:$IMAGE_TAG";
 
-#before_deploy:
 after_success:
   - mkdir -p build
   - cd build
