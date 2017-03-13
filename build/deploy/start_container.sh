@@ -14,4 +14,4 @@ sudo docker run -d -i \
         --env DEBUG=1 \
         --publish 80:80 \
         --name webserver \
-        webserver
+        websrv

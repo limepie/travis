@@ -17,8 +17,10 @@ env:
     - DOCKER_REPO="$DOCKER_HUB/$DOCKER_REPO_SLUG"
     - if [ ! -z "$TRAVIS_TAG" ]; then
         export IMAGE_TAG="$TRAVIS_TAG$TRAVIS_BUILD_NUMBER";
+        export IMAGE_TAGNAME="$TRAVIS_TAG/$TRAVIS_BUILD_NUMBER";
       else
         export IMAGE_TAG="$TRAVIS_BRANCH$TRAVIS_BUILD_NUMBER";
+        export IMAGE_TAGNAME="$TRAVIS_BRANCH/$TRAVIS_BUILD_NUMBER";
       fi
 
 branches:
@@ -93,7 +95,7 @@ deploy:
     access_key_id: AKIAIYFMU73S3HMTZRVA
     secret_access_key: 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
     bucket: yejune-deploy
-    key: limepie/travis/latest/release/build.zip
+    key: $TRAVIS_REPO_SLUG/latest/$IMAGE_TAGNAME/build.zip
     bundle_type: zip
     application: app
     deployment_group: deploy

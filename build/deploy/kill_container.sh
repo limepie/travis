@@ -2,4 +2,4 @@
 
 set -e
 
-docker rm -f webserver || true
+docker rm -f websrv || true
