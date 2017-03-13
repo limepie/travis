@@ -76,9 +76,8 @@ before_deploy:
 
 deploy:
   - provider: s3
-    access_key_id: AKIAIX6VW5NAU5JCKXJA
-    secret_access_key: &1
-      secure: WlpqVtb00h/OmO4Wld/b0fVwelRnhbQMUQNil9tOB3su676DZO+IUHEb0dwAjRYGU3UAu3C3xElrcFrDraqGJu+NYkYQYhcp7NDcJdEQE1bTQbShSVGt/xL/Un0lR8q4YfN55PwkkdCWAx9myYO+8VdnYp9WD6kDoD7wGVoffO7PSzjAN3U2CLxG7ZQdYU5tpeALYHD092Fv+ouqJimcVm0gkP1wvgTuM2rIXC+lCenS/5s96XoGEPuTUEOJp6QfiOTuSk5ofJvOhRCfQnqqcO5uV6SQkBZUETj9K5kiLHkgoW6i1/uLeUDnP6mgQbOi/TidKwmWeBytj7ZwkNQhJCfEHYZ0WQS7lbPDK9AS4flWWrZfpCiHxeIMajCQBzkjlXvuJ+tplEbyJrW7hmUVmAAw5wCvnwjGOK29Cra+ovhkIdy/YC3cU4vUI3CIuGXsUii99tXp1BjAp3Jr7V+RJni2Hx8zZgeJ9BaETJZYzBzjgRR8MBOyzIB5X7K3dhFECHhgtr54XFsTfsj5SyZCVG+H/oSMP8huJQsGB4x8BZJofKR+1P9JUMiMkQZsWsRLQ1OLT0LVxudSXILAiv8+Ax2/e++sJ0LtkLVTZkwbNUx0aQL4oOxNaCEZMMZT48ul1uyjk8VGwnZmumc42HGuu7l3Hvjx/r2BNHewDUcTRYw=
+    access_key_id: AKIAIYFMU73S3HMTZRVA
+    secret_access_key: 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
     bucket: yejune-deploy
     region: ap-northeast-2
     local_dir: upload
@@ -90,8 +89,8 @@ deploy:
       repo: $TRAVIS_REPO_SLUG
       all_branches: true
   - provider: codedeploy
-    access_key_id: AKIAIX6VW5NAU5JCKXJA
-    secret_access_key: *1
+    access_key_id: AKIAIYFMU73S3HMTZRVA
+    secret_access_key: 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
     bucket: yejune-deploy
     key: build.zip
     bundle_type: zip
