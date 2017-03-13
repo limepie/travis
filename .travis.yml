@@ -85,7 +85,7 @@ deploy:
     bucket: yejune-deploy
     region: ap-northeast-2
     local_dir: upload
-    upload-dir: $TRAVIS_REPO_SLUG/latest/$IMAGE_TAGNAME
+    upload-dir: $TRAVIS_REPO_SLUG/$IMAGE_TAGNAME
     skip_cleanup: true
     acl: public_read
     detect_encoding: true
@@ -96,7 +96,7 @@ deploy:
     access_key_id: AKIAIYFMU73S3HMTZRVA
     secret_access_key: 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
     bucket: yejune-deploy
-    key: $TRAVIS_REPO_SLUG/latest/$IMAGE_TAGNAME/build.zip
+    key: $TRAVIS_REPO_SLUG/$IMAGE_TAGNAME/build.zip
     bundle_type: zip
     application: app
     deployment_group: deploy
