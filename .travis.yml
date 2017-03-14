@@ -58,9 +58,9 @@ before_script:
 script:
   - docker build --tag travis .;
   - docker run -d --privileged -v /usr/local/bin/docker:/usr/bin/docker -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/var/www --name travis travis;
-  - dockin "apt-get update -y";
-  - dockin "apt-get install -y curl";
-  - dockin "curl -s https://get.docker.com | sh";
+#  - dockin "apt-get update -y";
+#  - dockin "apt-get install -y curl";
+#  - dockin "curl -s https://get.docker.com | sh";
   - dockin "composer self-update";
   - dockin "composer install";
   - dockin "docker build --build-arg BUILD_NUMBER=$TRAVIS_BUILD_NUMBER --build-arg BUILD_TAG=$IMAGE_TAG --tag $DOCKER_REPO_SLUG .";
