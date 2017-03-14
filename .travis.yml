@@ -57,7 +57,9 @@ before_script:
 
 script:
   - docker build --tag travis .;
-  - docker run -d --privileged -v $(which docker):/usr/local/bin/docker -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/var/www --name travis travis;
+  - docker run -d --privileged -v $(which docker):/usr/bin/docker -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/var/www --name travis travis;
+  - dockin "ls -al /usr/bin/docker";
+  - dockin "chmod x+ /usr/bin/docker";
 #  - dockin "apt-get update -y";
 #  - dockin "apt-get install -y curl";
 #  - dockin "curl -s https://get.docker.com | sh";
