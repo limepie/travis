@@ -63,7 +63,7 @@ script:
   - dockin "curl -s https://get.docker.com | sh";
   - dockin "composer self-update";
   - dockin "composer install";
-  - dockin "docker build --build-arg BUILD_NUMBER=$TRAVIS_BUILD_NUMBER --build-arg BUILD_TAG=$IMAGE_TAG --tag $DOCKER_REPO_SLUG .";
+  - dockin "docker build --build-arg BUILD_NUMBER=$TRAVIS_BUILD_NUMBER --tag $DOCKER_REPO_SLUG .";
 
 after_success:
   - mkdir -p build

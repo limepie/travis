@@ -8,4 +8,6 @@ ENV FPM_LISTEN /dev/shm/php-fpm.sock
 
 ENV FASTCGI_PASS unix:/dev/shm/php-fpm.sock
 
+ENV BUILD_TAG ${IMAGE_TAG}
+
 COPY ./ /var/www/
