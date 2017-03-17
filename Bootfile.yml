@@ -3,7 +3,7 @@ stage_name: local
 services:
   webserver:
     container_name: webserver
-    image: yejune/webserver:7.0.16
+    image: yejune/webserver:7.0.17
     expose:
       - '80'
     working_dir: /var/www

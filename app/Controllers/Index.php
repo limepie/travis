@@ -9,6 +9,8 @@ class Index extends \App\Controllers
 
     public function index()
     {
+        echo $_SERVER['BUILD_NUMBER'].' '.$_SERVER['BUILD_TAG'];
+        exit();
         $request  = $this->request;
         $response = $this->response;
 
