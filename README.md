@@ -1,4 +1,4 @@
-# php skeleton
+# travis
 
 Phalcon Micro Mvc Framework Wrapper.
 
