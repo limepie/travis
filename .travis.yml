@@ -39,6 +39,7 @@ before_install:
   - sudo apt-get remove docker-engine -y
   - curl -s https://get.docker.com | sudo sh
   - sudo usermod -aG docker $USER
+  - ls -al ~/.ssh
 
 install:
   - function dockin() { docker exec -it travis /bin/sh -c "$@"; }
