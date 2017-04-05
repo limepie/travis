@@ -58,6 +58,7 @@ before_script:
   - echo "TRAVIS_REPO_SLUG  $TRAVIS_REPO_SLUG"
 
 script:
+  - env
   - docker build --tag travis .;
   - docker run -d --privileged -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/var/www --name travis travis;
   - dockin "apt-get update -y";
